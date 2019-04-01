@@ -65,7 +65,7 @@ export class Pinyin4js {
    * @param isUppercase 可选，是否返回大写字母，默认小写
    * @returns string
    */
-  getPinyinWithoutTone(word: string, isUppercase?: boolean) {
+  public getPinyinWithoutTone(word: string, isUppercase?: boolean) {
     if (!word || !word.match(this.regExpStartAll)) {
       return this.numberSign;
     }
@@ -100,7 +100,7 @@ export class Pinyin4js {
    * * options.hasFullLetter 可选，是否拥有完整的26个字母,默认有
    * @returns [IFirstLetterGroup](IFirstLetterGroup)[ ] 由首字母分组的中文词语集合
    */
-  groupByFirstLetter(wordsListParams: IWords[], options?: {
+  private groupByFirstLetter(wordsListParams: IWords[], options?: {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
 
@@ -127,9 +127,9 @@ export class Pinyin4js {
     this.sort(allWordsList);
 
     // 3. 分组
-    const result: IFirstLetterGroup[] = this.grouping(allWordsList, options);
+    const firstLetterGroupList: IFirstLetterGroup[] = this.grouping(allWordsList, options);
 
-    return result;
+    return firstLetterGroupList;
   }
 
   /**
@@ -142,7 +142,7 @@ export class Pinyin4js {
   private grouping(allWordsList: IFirstLetterItem[], options?: {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
-    let result: IFirstLetterGroup[] = [];
+    let firstLetterGroupList: IFirstLetterGroup[] = [];
     let currentLetter = this.numberSign;  // 当前的首字母，初始化为井号
     let currentCharCode = currentLetter.charCodeAt(0);  // 当前的ASCII码，初始化为当前首字母的值
     const isFull = options && !options.hasFullLetter ? false : true;  //  是否需要全字母
@@ -150,12 +150,12 @@ export class Pinyin4js {
       = this.upperCaseA.charCodeAt(0) - this.numberSign.charCodeAt(0);  // 用作处理井号之后需要补足的字母
 
     allWordsList.forEach((item, index) => {
-      const firstLetter = item.firstLetter;
-      const differ = firstLetter.charCodeAt(0) - currentCharCode; // 计算有几个字母需要补足
+      const letter = item.firstLetter;
+      const differ = letter.charCodeAt(0) - currentCharCode; // 计算有几个字母需要补足
 
       // 需要拥有完整26个字母时，补足缺失的
       // 超过两个，才说明中间有需要补的地方，比如C-A=2，中间要补一个B
-      if (isFull && differ > 1 && firstLetter !== this.upperCaseA) {
+      if (isFull && differ > 1 && letter !== this.upperCaseA) {
         let addCount = differ - 1;  // C-A=2，中间要补一个B
         let firstCharCode = currentCharCode + 1;
         let firstLetter = String.fromCharCode(firstCharCode);
@@ -171,19 +171,19 @@ export class Pinyin4js {
         const createEmptyLetterGroupParams: ICreateEmptyLetterGroup = {
           addCount,
           firstLetter,
-          result,
           firstCharCode,
+          result: firstLetterGroupList,
         };
         const temp = this.createEmptyLetterGroup(createEmptyLetterGroupParams);
 
         currentLetter = temp.firstLetter;
         currentCharCode = temp.firstCharCode;
-        result = temp.result;
+        firstLetterGroupList = temp.result;
       }
 
       // result中没有的，就新增（包括第一个字母）
-      if (index === 0 || currentLetter !== firstLetter) {
-        currentLetter = firstLetter;
+      if (index === 0 || currentLetter !== letter) {
+        currentLetter = letter;
         currentCharCode = currentLetter.charCodeAt(0);
 
         const wordsList: IFirstLetterItem[] = [];
@@ -194,46 +194,45 @@ export class Pinyin4js {
           letter: currentLetter,
         };
 
-        result.push(firstLetterGroup);
+        firstLetterGroupList.push(firstLetterGroup);
         return;
       }
 
       // result中存在的，就直接加入到所在组织中
-      const currentGroupIndex = result.findIndex(
+      const currentGroupIndex = firstLetterGroupList.findIndex(
         firstLetterGroup => firstLetterGroup.letter === currentLetter);
       if (currentGroupIndex >= 0) {
-        result[currentGroupIndex].wordsList.push(item);
+        firstLetterGroupList[currentGroupIndex].wordsList.push(item);
       }
     });
 
-    const differ = this.upperCaseZ.charCodeAt(0) - currentCharCode;
+    const lastDiffer = this.upperCaseZ.charCodeAt(0) - currentCharCode;
 
-    if (!isFull || differ < 1) {  // 跟之前的补漏不一样，最后差几个补几个
-      return result;
+    // 跟之前的补漏不一样，最后差几个补几个
+    if (isFull && lastDiffer > 0) {
+      // 补足最后缺失的
+      let addCount = lastDiffer;
+      let firstCharCode = currentCharCode + 1;
+      let firstLetter = String.fromCharCode(firstCharCode);
+
+      // 处理井号分组的问题
+      const newCount = lastDiffer - numberSignDiffer;
+      if (newCount > 0) {
+        addCount = newCount + 1;
+        firstLetter = this.upperCaseA;
+        firstCharCode = firstLetter.charCodeAt(0);
+      }
+
+      const createEmptyLetterGroupParams: ICreateEmptyLetterGroup = {
+        addCount,
+        firstLetter,
+        firstCharCode,
+        result: firstLetterGroupList,
+      };
+      this.createEmptyLetterGroup(createEmptyLetterGroupParams);
     }
 
-    // 补足最后缺失的
-    let addCount = differ;
-    let firstCharCode = currentCharCode + 1;
-    let firstLetter = String.fromCharCode(firstCharCode);
-
-    // 处理井号分组的问题
-    const newCount = differ - numberSignDiffer;
-    if (newCount > 0) {
-      addCount = newCount + 1;
-      firstLetter = this.upperCaseA;
-      firstCharCode = firstLetter.charCodeAt(0);
-    }
-
-    const createEmptyLetterGroupParams: ICreateEmptyLetterGroup = {
-      addCount,
-      firstLetter,
-      result,
-      firstCharCode,
-    };
-    this.createEmptyLetterGroup(createEmptyLetterGroupParams);
-
-    return result;
+    return firstLetterGroupList;
   }
 
   /**
