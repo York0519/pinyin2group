@@ -279,7 +279,7 @@ export class Pinyin4js {
    */
   private sort(allWordsList: IFirstLetterItem[]) {
     allWordsList.sort((a, b) => {
-      return a.firstLetter.localeCompare(b.firstLetter);
+      return a.pinyinWithoutTone.localeCompare(b.pinyinWithoutTone);
     });
   }
 }
@@ -339,6 +339,10 @@ const result = new Pinyin4js().groupByFirstLetter([
   {
     wordEN: 'INFINITI',
     word: '英菲尼迪',
+  },
+  {
+    wordEN: 'INFINITI',
+    word: 'Z英菲尼迪',
   },
   {
     wordEN: 'FERRARI',
