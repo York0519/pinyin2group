@@ -275,7 +275,6 @@ export class Pinyin4js {
    * **排序**
    * @param allWordsList 所有的含首字母中文词语
    * @returns [IFirstLetterItem](IFirstLetterItem)[ ] 包含首字母的中文词语条目数组
-   * TODO: 同首字母,排第二个字,以此类推
    */
   private sort(allWordsList: IFirstLetterItem[]) {
     allWordsList.sort((a, b) => {
@@ -283,77 +282,3 @@ export class Pinyin4js {
     });
   }
 }
-const result = new Pinyin4js().groupByFirstLetter([
-  {
-    wordEN: 'JAGUAR',
-    word: '捷豹',
-  },
-  {
-    wordEN: 'TOYOTA',
-    word: '123',
-  },
-  {
-    wordEN: 'BMW',
-    word: '吧欧',
-  },
-  {
-    wordEN: 'BMW',
-    word: '吧奥',
-  },
-  {
-    wordEN: 'BMW',
-    word: '宝马1',
-  },
-  {
-    wordEN: 'VW',
-    word: '',
-  },
-  {
-    wordEN: 'CADILLAC',
-    word: 'kaidilake',
-  },
-  {
-    wordEN: 'LANDROVER',
-    word: 'L虎',
-  },
-  {
-    wordEN: 'RENAULT',
-    word: 'Lei诺',
-  },
-  {
-    wordEN: 'MASERATI',
-    word: 'ma莎拉蒂',
-  },
-  {
-    wordEN: 'AUDI',
-    word: '奥迪',
-  },
-  {
-    wordEN: 'MAZDA',
-    word: '马自达',
-  },
-  {
-    wordEN: 'ACURA',
-    word: '讴歌��',
-  },
-  {
-    wordEN: 'INFINITI',
-    word: '英菲尼迪',
-  },
-  {
-    wordEN: 'INFINITI',
-    word: 'Z英菲尼迪',
-  },
-  {
-    wordEN: 'FERRARI',
-    word: '法拉利',
-  },
-  {
-    wordEN: 'BENZ',
-    word: '奔驰',
-  },
-]);
-console.log('groupByFirstLetter->', result);
-result.filter(item => item.wordsList.length > 0).forEach((item, index) => {
-  console.log('item.wordsList%s->', index, item.wordsList);
-});
