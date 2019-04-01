@@ -9,17 +9,38 @@
  */
 type style = 'WITH_TONE_MARK' | 'WITHOUT_TONE' | 'WITH_TONE_NUMBER' | 'FIRST_LETTER';
 
-/**
- * #### 中文转拼音
- * @param words 中文字符串
- * @param separator 分隔符，可传空字符串
- * @param format 指定拼音风格。可以通过以下几种属性值进行指定：
- * 'WITH_TONE_MARK' | 'WITHOUT_TONE' | 'WITH_TONE_NUMBER' | 'FIRST_LETTER'，详情请查看[style](style)。
- *
- * @returns string 返回一个以[separator](separator)分隔的字符串。
- */
 declare const pinyin4js: {
+  /**
+   * #### 中文转拼音
+   * @param words 中文字符串
+   * @param separator 分隔符，可传空字符串
+   * @param format 指定拼音风格。可以通过以下几种属性值进行指定：
+   * 'WITH_TONE_MARK' | 'WITHOUT_TONE' | 'WITH_TONE_NUMBER' | 'FIRST_LETTER'，详情请查看[style](style)。
+   *
+   * @returns string 返回一个以[separator](separator)分隔的字符串。
+   */
   convertToPinyinString(words: string, separator: string, format: style): string;
+
+  /**
+   * #### 中文转简体中文
+   * @param words 中文字符串
+   * @returns string 返回一个简体中文的字符串。
+   */
+  convertToSimplifiedChinese(words: string): string;
+
+  /**
+   * #### 中文转繁体中文
+   * @param words 中文字符串
+   * @returns string 返回一个繁体中文的字符串。
+   */
+  convertToTraditionalChinese(words: string): string;
+
+  /**
+   * #### 中文转首字母
+   * @param words 中文字符串
+   * @returns string 返回一个首字母的字符串。
+   */
+  getShortPinyin(words: string): string;
 }
 
 export default pinyin4js;
