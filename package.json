@@ -1,6 +1,6 @@
 {
   "name": "pinyin-group",
-  "version": "1.0.0-2.0",
+  "version": "1.0.0-3.0",
   "description": "中文转拼音Node.js版",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
