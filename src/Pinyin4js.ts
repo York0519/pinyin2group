@@ -1,17 +1,17 @@
 import pinyin4js from 'pinyin4js';
 
 /**
- * @param wordEN 词语的Code | 英文名
+ * @param options 其它数据，原封不动返回，方便组装
  * @param word 中文词语
  */
 export interface IWords {
-  wordEN?: string;
+  options?: any;
   word: string;
 }
 
 /**
  * **包含首字母的中文词语条目**
- * @param wordEN 词语的Code | 英文名
+ * @param options 其它数据，原封不动返回，方便组装
  * @param word 中文词语
  * @param firstLetter 该词语的首字母
  * @param pinyinWithoutTone 该词语不带声调的拼音
