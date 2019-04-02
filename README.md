@@ -37,7 +37,7 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 
 ```javascript
     //pinyin2group@1.1.0 or latest
-    import { Pinyin4js } from 'pinyin2group';
+    import { Pinyin2Group } from './pinyin2group';
 
     // more detail methods in test
 
@@ -49,15 +49,15 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
     // { wordsList: [ [Object] ], letter: 'X' },
     // { letter: 'Y', wordsList: [] },
     // { letter: 'Z', wordsList: [] } ]
-    console.log(new Pinyin4js().groupByFirstLetter([{ word: '厦门你好大厦厦门' }]));
+    console.log(new Pinyin2Group().groupByFirstLetter([{ word: '厦门你好大厦厦门' }]));
 
     // output: [ { wordsList: [ [Object] ], letter: 'X' } ]
-    console.log(new Pinyin4js().groupByFirstLetter([{ word: '厦门你好大厦厦门' }], { hasFullLetter: false }));
+    console.log(new Pinyin2Group().groupByFirstLetter([{ word: '厦门你好大厦厦门' }], { hasFullLetter: false }));
 
     // output: xiamennihaodashaxiamen
-    console.log(new Pinyin4js().getPinyinWithoutTone('厦门你好大厦厦门'));
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门'));
 
     // output: XIAMENNIHAODASHAXIAMEN
-    console.log(new Pinyin4js().getPinyinWithoutTone('厦门你好大厦厦门', true));
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', true));
 
 ```
