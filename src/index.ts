@@ -1,1 +1,1 @@
-export * from './Pinyin4js';
+export * from './pinyin2group';

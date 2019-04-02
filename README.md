@@ -1,11 +1,13 @@
-## pinyin-group 
-<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/dy/pinyin-group.svg" alt="Downloads"></a>
-<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/v/pinyin-group.svg" alt="Version"></a>
-<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/l/pinyin-group.svg" alt="License"></a>
-> 基于[pinyin4js](https://github.com/superbiger/pinyin4js)  
+## pinyin2group 
+<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/dy/pinyin2group.svg" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/v/pinyin2group.svg" alt="Version"></a>
+<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/l/pinyin2group.svg" alt="License"></a>
+> 基于[pinyin4js](https://github.com/superbiger/pinyin4js)的通讯录分组排序工具  
 > 注：暂仅支持Node
 
 ## Features
+* **通讯录分组排序工具**   
+
 * **方便通讯录调用：以首字母分组、可选补全26个字母、排序时同一字母自动比较下一个**   
 
 * **准确、完善的字库**  
@@ -26,7 +28,7 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 
 * **INSTALL**
 ```
-    npm install pinyin-group
+    npm install pinyin2group
 ```
 
 * **USE**
@@ -34,8 +36,8 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 #### Node
 
 ```javascript
-    //pinyin-group@1.1.0 or latest
-    import { Pinyin4js } from 'pinyin-group';
+    //pinyin2group@1.1.0 or latest
+    import { Pinyin4js } from 'pinyin2group';
 
     // more detail methods in test
 
