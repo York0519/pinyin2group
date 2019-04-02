@@ -1,8 +1,7 @@
 ## pinyin4js  
-<a href="https://codebeat.co/projects/github-com-superbiger-pinyin4js-master"><img alt="codebeat badge" src="https://codebeat.co/badges/66eb52ae-bd9e-47d6-84cd-8c01cc01b46f" /></a>
-<a href="https://www.npmjs.com/package/pinyin4js"><img src="https://img.shields.io/npm/dy/pinyin4js.svg" alt="Downloads"></a>
-<a href="https://www.npmjs.com/package/pinyin4js"><img src="https://img.shields.io/npm/v/pinyin4js.svg" alt="Version"></a>
-<a href="https://www.npmjs.com/package/pinyin4js"><img src="https://img.shields.io/npm/l/pinyin4js.svg" alt="License"></a>
+<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/dy/pinyin-group.svg" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/v/pinyin-group.svg" alt="Version"></a>
+<a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/l/pinyin-group.svg" alt="License"></a>
 > 基于[pinyin4js](https://github.com/superbiger/pinyin4js)  
 > 注：暂仅支持Node
 
@@ -27,7 +26,7 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 
 * **INSTALL**
 ```
-    npm install pinyin4js
+    npm install pinyin-group
 ```
 
 * **USE**
@@ -35,8 +34,8 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 #### Node
 
 ```javascript
-    //pinyin4js@1.3.16 or latest
-    import pinyin4js from 'pinyin4js';
+    //pinyin-group@1.1.0 or latest
+    import { Pinyin4js } from 'pinyin-group';
 
     // more detail methods in test
     // WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
