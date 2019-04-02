@@ -38,14 +38,24 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
     import { Pinyin4js } from 'pinyin-group';
 
     // more detail methods in test
-    // WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
 
-    // output: xià#mén#nǐ#hǎo#dà#shà#xià#mén
-    console.log(pinyin4js.convertToPinyinString('厦门你好大厦厦门', '#', pinyin4js.WITH_TONE_MARK))
+    // output: [ { letter: 'A', wordsList: [] },
+    // { letter: 'B', wordsList: [] },
+    // { letter: 'C', wordsList: [] },
+    // ...
+    // { letter: 'W', wordsList: [] },
+    // { wordsList: [ [Object] ], letter: 'X' },
+    // { letter: 'Y', wordsList: [] },
+    // { letter: 'Z', wordsList: [] } ]
+    console.log(new Pinyin4js().groupByFirstLetter([{ word: '厦门你好大厦厦门' }]));
 
-    //首字母风格
-    // output: xmnhdsxm
-    console.log(pinyin4js.convertToPinyinString('厦门你好大厦厦门', '', pinyin4js.FIRST_LETTER))
-    // or
-    console.log(pinyin4js.getShortPinyin('厦门你好大厦厦门'))
+    // output: [ { wordsList: [ [Object] ], letter: 'X' } ]
+    console.log(new Pinyin4js().groupByFirstLetter([{ word: '厦门你好大厦厦门' }], { hasFullLetter: false }));
+
+    // output: xiamennihaodashaxiamen
+    console.log(new Pinyin4js().getPinyinWithoutTone('厦门你好大厦厦门'));
+
+    // output: XIAMENNIHAODASHAXIAMEN
+    console.log(new Pinyin4js().getPinyinWithoutTone('厦门你好大厦厦门', true));
+
 ```
