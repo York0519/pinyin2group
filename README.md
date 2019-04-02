@@ -1,4 +1,4 @@
-## pinyin4js  
+## pinyin-group 
 <a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/dy/pinyin-group.svg" alt="Downloads"></a>
 <a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/v/pinyin-group.svg" alt="Version"></a>
 <a href="https://www.npmjs.com/package/pinyin-group"><img src="https://img.shields.io/npm/l/pinyin-group.svg" alt="License"></a>
