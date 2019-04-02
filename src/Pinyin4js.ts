@@ -100,7 +100,7 @@ export class Pinyin4js {
    * * options.hasFullLetter 可选，是否拥有完整的26个字母,默认有
    * @returns [IFirstLetterGroup](IFirstLetterGroup)[ ] 由首字母分组的中文词语集合
    */
-  private groupByFirstLetter(wordsListParams: IWords[], options?: {
+  public groupByFirstLetter(wordsListParams: IWords[], options?: {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
 
