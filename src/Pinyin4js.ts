@@ -41,7 +41,7 @@ interface ICreateEmptyLetterGroup {
   firstCharCode: number;
 }
 
-export class Pinyin4js {
+export default class Pinyin4js {
 
   /**
    * 匹配中文和字母
