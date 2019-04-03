@@ -1,6 +1,6 @@
 {
   "name": "pinyin2group",
-  "version": "1.0.0-3.0",
+  "version": "1.0.0-4.0",
   "description": "基于[pinyin4js](https://github.com/superbiger/pinyin4js)的通讯录分组排序工具",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
@@ -15,7 +15,12 @@
   },
   "keywords": [
     "pinyin",
-    "拼音"
+    "拼音",
+    "通讯录",
+    "分组",
+    "排序",
+    "首字母",
+    "letter"
   ],
   "author": "York <wuyuqiang1993@21cn.com>",
   "license": "MIT",
