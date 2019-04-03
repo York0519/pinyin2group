@@ -232,6 +232,21 @@ export class Pinyin2Group {
       this.createEmptyLetterGroup(createEmptyLetterGroupParams);
     }
 
+    // 把#号的放到最后
+    const numberSignIndex = firstLetterGroupList.findIndex(
+      firstLetterGroup => firstLetterGroup.letter === this.numberSign);
+    if (numberSignIndex >= 0) {
+      const temp = firstLetterGroupList[numberSignIndex];
+      firstLetterGroupList.splice(numberSignIndex, 1);
+      firstLetterGroupList.push(temp);
+    } else if (isFull) {  // 不存在且需要补足，则新增
+      const firstLetterGroup: IFirstLetterGroup = {
+        letter: this.numberSign,
+        wordsList: [],
+      };
+      firstLetterGroupList.push(firstLetterGroup);
+    }
+
     return firstLetterGroupList;
   }
 

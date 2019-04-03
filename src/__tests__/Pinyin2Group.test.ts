@@ -125,30 +125,7 @@ describe('Pinyin2Group tests suit.', () => {
     ]);
 
     expect(result).toEqual([{
-      letter: '#',
-      wordsList: [{
-        options:
-        {
-          brandCode: 'TOYOTA',
-          imageUrl:
-            'https://parts-images.oss-cn-shenzhen.aliyuncs.com/brand_logo/TOYOTA.png',
-        },
-        word: '123',
-        pinyinWithoutTone: '#',
-        firstLetter: '#',
-      },
-      {
-        options:
-        {
-          brandCode: 'VW',
-          imageUrl:
-            'https://parts-images.oss-cn-shenzhen.aliyuncs.com/brand_logo/VW.png',
-        },
-        word: '',
-        pinyinWithoutTone: '#',
-        firstLetter: '#',
-      }] },
-    { letter: 'A',
+      letter: 'A',
       wordsList: [{
         options:
         {
@@ -340,7 +317,32 @@ describe('Pinyin2Group tests suit.', () => {
         word: 'Z英菲尼迪',
         pinyinWithoutTone: 'ZYINGFEINIDI',
         firstLetter: 'Z',
-      }] }]);
+      }] },
+    {
+      letter: '#',
+      wordsList: [{
+        options:
+        {
+          brandCode: 'TOYOTA',
+          imageUrl:
+            'https://parts-images.oss-cn-shenzhen.aliyuncs.com/brand_logo/TOYOTA.png',
+        },
+        word: '123',
+        pinyinWithoutTone: '#',
+        firstLetter: '#',
+      },
+      {
+        options:
+        {
+          brandCode: 'VW',
+          imageUrl:
+            'https://parts-images.oss-cn-shenzhen.aliyuncs.com/brand_logo/VW.png',
+        },
+        word: '',
+        pinyinWithoutTone: '#',
+        firstLetter: '#',
+      }] },
+    ]);
   });
 
   it('不补全26字母获取由首字母分组的中文词语集合test', () => {
@@ -368,6 +370,12 @@ describe('Pinyin2Group tests suit.', () => {
     const result = new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', true);
 
     expect(result).toEqual('XIAMENNIHAODASHAXIAMEN');
+  });
+
+  it('最后一个分组是#号', () => {
+    const result = new Pinyin2Group().groupByFirstLetter([{ word: '厦门你好大厦厦门' }]);
+
+    expect(result[result.length - 1].letter).toEqual('#');
   });
 
 });
