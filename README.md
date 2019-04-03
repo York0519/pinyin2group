@@ -37,7 +37,7 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
 
 ```javascript
     //pinyin2group@1.1.0 or latest
-    import { Pinyin2Group } from './pinyin2group';
+    import { Pinyin2Group } from './Pinyin2Group';
 
     // more detail methods in test
 

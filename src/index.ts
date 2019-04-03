@@ -1,1 +1,1 @@
-export * from './pinyin2group';
+export * from './Pinyin2Group';
