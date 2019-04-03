@@ -1,4 +1,4 @@
-import { Pinyin2Group } from './../Pinyin2Group';
+import { Pinyin2Group } from '../Pinyin2Group';
 describe('Pinyin2Group tests suit.', () => {
 
   it('获取由首字母分组的中文词语集合test', () => {
