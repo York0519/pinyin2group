@@ -1,4 +1,3 @@
-// declare module 'node-pinyin';
 
 /**
  * **指定拼音风格。可以通过以下几种属性值进行指定：**
@@ -41,6 +40,6 @@ declare const pinyin4js: {
    * @returns string 返回一个首字母的字符串。
    */
   getShortPinyin(words: string): string;
-}
+};
 
 export default pinyin4js;

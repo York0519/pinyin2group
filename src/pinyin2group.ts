@@ -65,7 +65,7 @@ export class Pinyin2Group {
    * @param isUppercase 可选，是否返回大写字母，默认小写
    * @returns string
    */
-  public getPinyinWithoutTone(word: string, isUppercase?: boolean) {
+  public getPinyinWithoutTone(word: string, isUppercase: boolean = false) {
     if (!word || !word.match(this.regExpStartAll)) {
       return this.numberSign;
     }
@@ -127,9 +127,8 @@ export class Pinyin2Group {
     this.sort(allWordsList);
 
     // 3. 分组
-    const firstLetterGroupList: IFirstLetterGroup[] = this.grouping(allWordsList, options);
 
-    return firstLetterGroupList;
+    return this.grouping(allWordsList, options);
   }
 
   /**
@@ -143,68 +142,16 @@ export class Pinyin2Group {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
     let firstLetterGroupList: IFirstLetterGroup[] = [];
-    let currentLetter = this.numberSign;  // 当前的首字母，初始化为井号
+    const currentLetter = this.numberSign;  // 当前的首字母，初始化为井号
     let currentCharCode = currentLetter.charCodeAt(0);  // 当前的ASCII码，初始化为当前首字母的值
-    const isFull = options && !options.hasFullLetter ? false : true;  //  是否需要全字母
-    const numberSignDiffer
-      = this.upperCaseA.charCodeAt(0) - this.numberSign.charCodeAt(0);  // 用作处理井号之后需要补足的字母
+    const isFull = !(options && !options.hasFullLetter);  //  是否需要全字母
+    // 用作处理井号之后需要补足的字母
+    const numberSignDiffer = this.upperCaseA.charCodeAt(0) - this.numberSign.charCodeAt(0);
 
-    allWordsList.forEach((item, index) => {
-      const letter = item.firstLetter;
-      const differ = letter.charCodeAt(0) - currentCharCode; // 计算有几个字母需要补足
-
-      // 需要拥有完整26个字母时，补足缺失的
-      // 超过两个，才说明中间有需要补的地方，比如C-A=2，中间要补一个B
-      if (isFull && differ > 1 && letter !== this.upperCaseA) {
-        let addCount = differ - 1;  // C-A=2，中间要补一个B
-        let firstCharCode = currentCharCode + 1;
-        let firstLetter = String.fromCharCode(firstCharCode);
-
-        // 处理井号分组的问题
-        const newCount = differ - numberSignDiffer;
-        if (newCount > 0) {
-          addCount = newCount;
-          firstLetter = this.upperCaseA;
-          firstCharCode = firstLetter.charCodeAt(0);
-        }
-
-        const createEmptyLetterGroupParams: ICreateEmptyLetterGroup = {
-          addCount,
-          firstLetter,
-          firstCharCode,
-          result: firstLetterGroupList,
-        };
-        const temp = this.createEmptyLetterGroup(createEmptyLetterGroupParams);
-
-        currentLetter = temp.firstLetter;
-        currentCharCode = temp.firstCharCode;
-        firstLetterGroupList = temp.result;
-      }
-
-      // result中没有的，就新增（包括第一个字母）
-      if (index === 0 || currentLetter !== letter) {
-        currentLetter = letter;
-        currentCharCode = currentLetter.charCodeAt(0);
-
-        const wordsList: IFirstLetterItem[] = [];
-        wordsList.push(item);
-
-        const firstLetterGroup: IFirstLetterGroup = {
-          wordsList,
-          letter: currentLetter,
-        };
-
-        firstLetterGroupList.push(firstLetterGroup);
-        return;
-      }
-
-      // result中存在的，就直接加入到所在组织中
-      const currentGroupIndex = firstLetterGroupList.findIndex(
-        firstLetterGroup => firstLetterGroup.letter === currentLetter);
-      if (currentGroupIndex >= 0) {
-        firstLetterGroupList[currentGroupIndex].wordsList.push(item);
-      }
-    });
+    const temp = this.allWordsListGrouping(
+      allWordsList, currentCharCode, isFull, numberSignDiffer, firstLetterGroupList, currentLetter);
+    firstLetterGroupList = temp.firstLetterGroupList;
+    currentCharCode = temp.currentCharCode;
 
     const lastDiffer = this.upperCaseZ.charCodeAt(0) - currentCharCode;
 
@@ -251,6 +198,77 @@ export class Pinyin2Group {
   }
 
   /**
+   * 所有词语先分个组
+   * @param allWordsList 所有词语
+   * @param oldCurrentCharCode 旧的当前charCode
+   * @param isFull 是否全字母
+   * @param numberSignDiffer 与#号的差
+   * @param oldFirstLetterGroupList旧首字母分组
+   * @param oldCurrentLetter旧当前字母
+   */
+  private allWordsListGrouping(
+    allWordsList: IFirstLetterItem[],
+    oldCurrentCharCode: number,
+    isFull: boolean,
+    numberSignDiffer: number,
+    oldFirstLetterGroupList: IFirstLetterGroup[],
+    oldCurrentLetter: string) {
+
+    let currentLetter = oldCurrentLetter;
+    let currentCharCode = oldCurrentCharCode;
+    let firstLetterGroupList = oldFirstLetterGroupList;
+
+    allWordsList.forEach((item, index) => {
+      const letter = item.firstLetter;
+      const differ = letter.charCodeAt(0) - currentCharCode; // 计算有几个字母需要补足
+      // 需要拥有完整26个字母时，补足缺失的
+      // 超过两个，才说明中间有需要补的地方，比如C-A=2，中间要补一个B
+      if (isFull && differ > 1 && letter !== this.upperCaseA) {
+        let addCount = differ - 1; // C-A=2，中间要补一个B
+        let firstCharCode = currentCharCode + 1;
+        let firstLetter = String.fromCharCode(firstCharCode);
+        // 处理井号分组的问题
+        const newCount = differ - numberSignDiffer;
+        if (newCount > 0) {
+          addCount = newCount;
+          firstLetter = this.upperCaseA;
+          firstCharCode = firstLetter.charCodeAt(0);
+        }
+        const createEmptyLetterGroupParams: ICreateEmptyLetterGroup = {
+          addCount,
+          firstLetter,
+          firstCharCode,
+          result: firstLetterGroupList,
+        };
+        const temp = this.createEmptyLetterGroup(createEmptyLetterGroupParams);
+        currentLetter = temp.firstLetter;
+        currentCharCode = temp.firstCharCode;
+        firstLetterGroupList = temp.result;
+      }
+      // result中没有的，就新增（包括第一个字母）
+      if (index === 0 || currentLetter !== letter) {
+        currentLetter = letter;
+        currentCharCode = currentLetter.charCodeAt(0);
+        const wordsList: IFirstLetterItem[] = [];
+        wordsList.push(item);
+        const firstLetterGroup: IFirstLetterGroup = {
+          wordsList,
+          letter: currentLetter,
+        };
+        firstLetterGroupList.push(firstLetterGroup);
+        return;
+      }
+      // result中存在的，就直接加入到所在组织中
+      const currentGroupIndex = firstLetterGroupList.findIndex(
+        firstLetterGroup => firstLetterGroup.letter === currentLetter);
+      if (currentGroupIndex >= 0) {
+        firstLetterGroupList[currentGroupIndex].wordsList.push(item);
+      }
+    });
+    return { firstLetterGroupList, currentCharCode };
+  }
+
+  /**
    * 往result中补足空字母词组
    * @param [createEmptyLetterGroupParams](ICreateEmptyLetterGroup) 补足空字母词组入参
    * @returns [createEmptyLetterGroupResponse](ICreateEmptyLetterGroup) 补足空字母词组出参
@@ -275,14 +293,12 @@ export class Pinyin2Group {
       firstLetter = String.fromCharCode(firstCharCode);
     }
 
-    const createEmptyLetterGroupResponse: ICreateEmptyLetterGroup = {
+    return {
       addCount,
       firstLetter,
       result,
       firstCharCode,
     };
-
-    return createEmptyLetterGroupResponse;
   }
 
   /**
