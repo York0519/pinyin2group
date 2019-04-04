@@ -148,10 +148,10 @@ export class Pinyin2Group {
     // 用作处理井号之后需要补足的字母
     const numberSignDiffer = this.upperCaseA.charCodeAt(0) - this.numberSign.charCodeAt(0);
 
-    const temp = this.allWordsListGrouping(
+    const groupTemp = this.allWordsListGrouping(
       allWordsList, currentCharCode, isFull, numberSignDiffer, firstLetterGroupList, currentLetter);
-    firstLetterGroupList = temp.firstLetterGroupList;
-    currentCharCode = temp.currentCharCode;
+    firstLetterGroupList = groupTemp.firstLetterGroupList;
+    currentCharCode = groupTemp.currentCharCode;
 
     const lastDiffer = this.upperCaseZ.charCodeAt(0) - currentCharCode;
 
