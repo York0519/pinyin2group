@@ -1,24 +1,35 @@
 import pinyin4js from 'pinyin4js';
 
 /**
- * @param options 其它数据，原封不动返回，方便组装
  * @param word 中文词语
+ * @param options 其它数据，原封不动返回，方便组装
  */
 export interface IWords {
-  options?: any;
   word: string;
+  options?: any;
 }
 
 /**
  * **包含首字母的中文词语条目**
- * @param options 其它数据，原封不动返回，方便组装
  * @param word 中文词语
+ * @param options 其它数据，原封不动返回，方便组装
  * @param firstLetter 该词语的首字母
  * @param pinyinWithoutTone 该词语不带声调的拼音
  */
 export interface IFirstLetterItem extends IWords {
   firstLetter: string;
   pinyinWithoutTone: string;
+}
+
+/**
+ * @param options 其它数据，原封不动返回，方便组装
+ * @param word 中文词语
+ * @param firstLetter 该词语的首字母
+ * @param pinyinWithoutTone 该词语不带声调的拼音
+ * @param index 转成拼音后原本的序号
+ */
+export interface IFirstLetterSortItem extends IFirstLetterItem {
+  index: number;
 }
 
 /**
@@ -104,9 +115,9 @@ export class Pinyin2Group {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
 
-    const allWordsList: IFirstLetterItem[] = [];
+    const allWordsList: IFirstLetterSortItem[] = [];
 
-    wordsListParams.forEach((words) => {
+    wordsListParams.forEach((words, index) => {
       if (!words) {
         return;
       }
@@ -114,9 +125,10 @@ export class Pinyin2Group {
       // 1. 转成首字母数组
       const pinyinWithoutTone = this.getPinyinWithoutTone(words.word, true);
 
-      const firstLetterItem: IFirstLetterItem = {
+      const firstLetterItem: IFirstLetterSortItem = {
         ...words,
         pinyinWithoutTone,
+        index,
         firstLetter: pinyinWithoutTone[0],
       };
 
@@ -138,7 +150,7 @@ export class Pinyin2Group {
    * * options.hasFullLetter 可选，是否拥有完整的26个字母,默认有
    * @returns [IFirstLetterGroup](IFirstLetterGroup)[ ] 由首字母分组的中文词语集合
    */
-  private grouping(allWordsList: IFirstLetterItem[], options?: {
+  private grouping(allWordsList: IFirstLetterSortItem[], options?: {
     hasFullLetter?: boolean,
   }): IFirstLetterGroup[] {
     let firstLetterGroupList: IFirstLetterGroup[] = [];
@@ -207,7 +219,7 @@ export class Pinyin2Group {
    * @param oldCurrentLetter旧当前字母
    */
   private allWordsListGrouping(
-    allWordsList: IFirstLetterItem[],
+    allWordsList: IFirstLetterSortItem[],
     oldCurrentCharCode: number,
     isFull: boolean,
     numberSignDiffer: number,
@@ -219,7 +231,14 @@ export class Pinyin2Group {
     let firstLetterGroupList = oldFirstLetterGroupList;
 
     allWordsList.forEach((item, index) => {
-      const letter = item.firstLetter;
+      const firstLetterItem: IFirstLetterItem = {
+        word: item.word,
+        options: item.options,
+        firstLetter: item.firstLetter,
+        pinyinWithoutTone: item.pinyinWithoutTone,
+      };
+
+      const letter = firstLetterItem.firstLetter;
       const differ = letter.charCodeAt(0) - currentCharCode; // 计算有几个字母需要补足
       // 需要拥有完整26个字母时，补足缺失的
       // 超过两个，才说明中间有需要补的地方，比如C-A=2，中间要补一个B
@@ -250,7 +269,7 @@ export class Pinyin2Group {
         currentLetter = letter;
         currentCharCode = currentLetter.charCodeAt(0);
         const wordsList: IFirstLetterItem[] = [];
-        wordsList.push(item);
+        wordsList.push(firstLetterItem);
         const firstLetterGroup: IFirstLetterGroup = {
           wordsList,
           letter: currentLetter,
@@ -262,7 +281,7 @@ export class Pinyin2Group {
       const currentGroupIndex = firstLetterGroupList.findIndex(
         firstLetterGroup => firstLetterGroup.letter === currentLetter);
       if (currentGroupIndex >= 0) {
-        firstLetterGroupList[currentGroupIndex].wordsList.push(item);
+        firstLetterGroupList[currentGroupIndex].wordsList.push(firstLetterItem);
       }
     });
     return { firstLetterGroupList, currentCharCode };
@@ -304,11 +323,13 @@ export class Pinyin2Group {
   /**
    * **排序**
    * @param allWordsList 所有的含首字母中文词语
-   * @returns [IFirstLetterItem](IFirstLetterItem)[ ] 包含首字母的中文词语条目数组
+   * @returns [IFirstLetterSortItem](IFirstLetterSortItem)[ ] 包含首字母的中文词语条目数组
    */
-  private sort(allWordsList: IFirstLetterItem[]) {
+  private sort(allWordsList: IFirstLetterSortItem[]) {
     allWordsList.sort((a, b) => {
-      return a.pinyinWithoutTone.localeCompare(b.pinyinWithoutTone);
+      return a.pinyinWithoutTone === b.pinyinWithoutTone ?
+        a.index - b.index :
+        a.pinyinWithoutTone.localeCompare(b.pinyinWithoutTone);
     });
   }
 }
