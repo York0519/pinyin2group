@@ -39,13 +39,13 @@ pipeline {
     stage('构建') {
       steps {
         echo '开始构建'
-        sh 'rm -rf dist'
+        // sh 'rm -rf dist'
         sh 'npm run build'
       }
     }
     stage('发布') {
       steps {
-        sh 'npm publish --access public'
+        sh 'npm publish'  //  --access public
       }
     }
   }
