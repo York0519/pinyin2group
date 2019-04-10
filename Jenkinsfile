@@ -9,13 +9,12 @@ pipeline {
   stages {
     stage('初始化') {
       steps {
-        #!D:/Program files/Git/bin/bash.exe
         echo '开始安装依赖'
         sh 'npm install'
         sh "npm version preminor --preid=${BUILD_NUMBER}"
         script {
-          env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"')
-          env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"')
+          env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"').trim()
+          env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"').trim()
         }
       }
     }
@@ -23,7 +22,6 @@ pipeline {
 
     stage('检查代码') {
       steps {
-        #!D:/Program files/Git/bin/bash.exe
         echo '开始执行tslint'
         sh 'npm run lint'
       }
@@ -31,14 +29,12 @@ pipeline {
 
     stage('构建') {
       steps {
-        #!D:/Program files/Git/bin/bash.exe
         echo '开始构建'
         sh 'npm run build'
       }
     }
     stage('发布') {
       steps {
-        #!D:/Program files/Git/bin/bash.exe
         sh 'npm publish'
       }
     }
@@ -47,7 +43,6 @@ pipeline {
   post {
     success {
       script {
-        #!D:/Program files/Git/bin/bash.exe
         def rawmsg = successNotifyData()
         sh "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
@@ -55,7 +50,6 @@ pipeline {
 
     failure {
       script {
-        #!D:/Program files/Git/bin/bash.exe
         def rawmsg = failNotifyData()
         sh "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
