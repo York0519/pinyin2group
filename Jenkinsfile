@@ -1,9 +1,4 @@
 pipeline {
-  // agent {
-  //   docker {
-  //     image 'node:10-alpine'
-  //   }
-  // }
   agent any
 
   environment {
@@ -14,17 +9,12 @@ pipeline {
   stages {
     stage('初始化') {
       steps {
-//         sh "apk add --no-cache curl"
-//         sh """echo 'registry=https://registry.npm.taobao.org/
-// @casstime:registry=http://dev.casstime.com/nexus/repository/npm_local/
-// //dev.casstime.com/nexus/repository/npm/:_authToken=NpmToken.8da9a63e-1088-376e-bb3c-39b9528078ad
-// //dev.casstime.com/nexus/repository/npm_local/:_authToken=NpmToken.9767dc0c-ccf3-3434-942e-f570ea239364' > ~/.npmrc"""
         echo '开始安装依赖'
-        sh 'npm install'
-        sh "npm version preminor --preid=${BUILD_NUMBER}"
+        bat 'npm install'
+        bat "npm version preminor --preid=${BUILD_NUMBER}"
         script {
-          env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"')
-          env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"')
+          env.PACKAGE_VERSION = bat(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"')
+          env.PACKAGE_NAME = bat(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"')
         }
       }
     }
@@ -33,20 +23,19 @@ pipeline {
     stage('检查代码') {
       steps {
         echo '开始执行tslint'
-        sh 'npm run lint'
+        bat 'npm run lint'
       }
     }
 
     stage('构建') {
       steps {
         echo '开始构建'
-        // sh 'rm -rf dist'
-        sh 'npm run build'
+        bat 'npm run build'
       }
     }
     stage('发布') {
       steps {
-        sh 'npm publish'  //  --access public
+        bat 'npm publish'
       }
     }
   }
@@ -55,14 +44,14 @@ pipeline {
     success {
       script {
         def rawmsg = successNotifyData()
-        sh "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
+        bat "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
     }
 
     failure {
       script {
         def rawmsg = failNotifyData()
-        sh "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
+        bat "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
     }
   }
