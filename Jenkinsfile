@@ -1,3 +1,5 @@
+#!D:\Program files\Git\bin\bash.exe
+
 pipeline {
   agent any
 
@@ -10,11 +12,11 @@ pipeline {
     stage('初始化') {
       steps {
         echo '开始安装依赖'
-        bat 'npm install'
-        bat "npm version preminor --preid=${BUILD_NUMBER}"
+        sh 'npm install'
+        sh "npm version preminor --preid=${BUILD_NUMBER}"
         script {
-          env.PACKAGE_VERSION = bat(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"')
-          env.PACKAGE_NAME = bat(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"')
+          env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"')
+          env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"')
         }
       }
     }
@@ -23,19 +25,19 @@ pipeline {
     stage('检查代码') {
       steps {
         echo '开始执行tslint'
-        bat 'npm run lint'
+        sh 'npm run lint'
       }
     }
 
     stage('构建') {
       steps {
         echo '开始构建'
-        bat 'npm run build'
+        sh 'npm run build'
       }
     }
     stage('发布') {
       steps {
-        bat 'npm publish'
+        sh 'npm publish'
       }
     }
   }
@@ -44,14 +46,14 @@ pipeline {
     success {
       script {
         def rawmsg = successNotifyData()
-        bat "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
+        sh "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
     }
 
     failure {
       script {
         def rawmsg = failNotifyData()
-        bat "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
+        sh "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
     }
   }
