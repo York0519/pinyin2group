@@ -1,7 +1,7 @@
 ## pinyin2group 
-<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/dy/pinyin2group.svg" alt="Downloads"></a>
-<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/v/pinyin2group.svg" alt="Version"></a>
-<a href="https://www.npmjs.com/package/pinyin2group"><img src="https://img.shields.io/npm/l/pinyin2group.svg" alt="License"></a> 
+[![Downloads](https://img.shields.io/npm/dy/pinyin2group.svg)](https://www.npmjs.com/package/pinyin2group)
+[![Version](https://img.shields.io/npm/v/pinyin2group.svg)](https://www.npmjs.com/package/pinyin2group)
+[![License](https://img.shields.io/npm/l/pinyin2group.svg)](https://www.npmjs.com/package/pinyin2group)
 > 基于[pinyin4js](https://github.com/superbiger/pinyin4js)的通讯录分组排序工具  
 > 注：暂仅支持Node  
 

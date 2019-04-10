@@ -1,13 +1,14 @@
 {
   "name": "pinyin2group",
-  "version": "1.0.0-8.2",
+  "version": "1.0.0-8.3",
   "description": "基于pinyin4js的通讯录分组排序工具",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "scripts": {
     "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
     "build": "rm -rf dist && tsc",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "tslint src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,6 @@
   "lint-staged": {
     "*.ts": [
       "tslint --fix",
-      "tslint --project ./tsconfig.json 'src/**/*.{ts,tsx}'",
       "git add"
     ]
   }
