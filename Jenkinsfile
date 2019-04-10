@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('初始化') {
       steps {
-        ${env.BASH}
+        env.BASH
         echo '开始安装依赖'
         sh 'npm install'
         sh "npm version preminor --preid=${BUILD_NUMBER}"
@@ -24,7 +24,7 @@ pipeline {
 
     stage('检查代码') {
       steps {
-        ${env.BASH}
+        env.BASH
         echo '开始执行tslint'
         sh 'npm run lint'
       }
@@ -32,14 +32,14 @@ pipeline {
 
     stage('构建') {
       steps {
-        ${env.BASH}
+        env.BASH
         echo '开始构建'
         sh 'npm run build'
       }
     }
     stage('发布') {
       steps {
-        ${env.BASH}
+        env.BASH
         sh 'npm publish'
       }
     }
@@ -48,7 +48,7 @@ pipeline {
   post {
     success {
       script {
-        ${env.BASH}
+        env.BASH
         def rawmsg = successNotifyData()
         sh "curl  ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
@@ -56,7 +56,7 @@ pipeline {
 
     failure {
       script {
-        ${env.BASH}
+        env.BASH
         def rawmsg = failNotifyData()
         sh "curl ${env.DINGDING_ROBOT_URL} -H 'Content-Type:application/json' -X POST --data '${rawmsg}'"
       }
