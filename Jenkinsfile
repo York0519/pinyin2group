@@ -10,8 +10,8 @@ pipeline {
     stage('Initialization') {
       steps {
         echo 'Start installing dependencies'
-        sh 'npm install'
         sh "npm version preminor --preid=${BUILD_NUMBER}"
+        sh 'npm install'
         script {
           env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"').trim()
           env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"').trim()
