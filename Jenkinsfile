@@ -19,7 +19,6 @@ pipeline {
       }
     }
 
-
     stage('Check code') {
       steps {
         echo 'Begin execution tslint'
@@ -27,14 +26,9 @@ pipeline {
       }
     }
 
-    stage('Build') {
-      steps {
-        echo 'Start building'
-        sh 'npm run build'
-      }
-    }
     stage('Bublish') {
       steps {
+        echo 'Start Bublishing'
         sh 'npm publish'
       }
     }
