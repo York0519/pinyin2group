@@ -7,9 +7,9 @@ pipeline {
   }
 
   stages {
-    stage('Initialization') {
+    stage('初始化') {
       steps {
-        echo 'Start installing dependencies'
+        echo '开始安装依赖'
         sh "npm version preminor --preid=${BUILD_NUMBER}"
         sh 'npm install'
         script {
@@ -19,16 +19,16 @@ pipeline {
       }
     }
 
-    stage('Check code') {
+    stage('检查代码') {
       steps {
-        echo 'Begin execution tslint'
+        echo '开始执行 tslint'
         sh 'npm run lint'
       }
     }
 
-    stage('Bublish') {
+    stage('发布') {
       steps {
-        echo 'Start Bublishing'
+        echo '开始发布'
         sh 'npm publish'
       }
     }
@@ -53,15 +53,15 @@ pipeline {
 
 def failNotifyData() {
   def changes = getChangeListByBuild(currentBuild)
-  def title = "${env.JOB_NAME} Build fails [${env.BUILD_NUMBER}]"
-  def markdown = "### ${title}\n #### New features ${changes} \n #### Summary > buildUrl: ${env.BUILD_URL} \n > [Click to view](${env.BUILD_URL}/console)"
+  def title = "${env.JOB_NAME} 构建失败 [${env.BUILD_NUMBER}]"
+  def markdown = "### ${title}\n #### 新增特性 ${changes} \n #### 摘要 > buildUrl: ${env.BUILD_URL} \n > [点击查看](${env.BUILD_URL}/console)"
   return buildJSON(title, markdown)
 }
 
 def successNotifyData() {
   def changes = getChangeList()
-  def title = "${env.JOB_NAME} Build success [${env.BUILD_NUMBER}]"
-  def markdown = "### ${title}\n #### New features: \n ${changes} #### Installation method: \n > npm install ${env.PACKAGE_NAME}@${env.PACKAGE_VERSION} --save\n"
+  def title = "${env.JOB_NAME} 构建成功 [${env.BUILD_NUMBER}]"
+  def markdown = "### ${title}\n #### 新增特性: \n ${changes} #### 安装方式: \n > npm install ${env.PACKAGE_NAME}@${env.PACKAGE_VERSION} --save\n"
   return buildJSON(title, markdown)
 }
 
