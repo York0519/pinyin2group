@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     NODEJS_ORG_MIRROR = 'https://npm.taobao.org/mirrors/node'
-    DINGDING_ROBOT_URL = 'https://oapi.dingtalk.com/robot/send?access_token=74b5d3343b5d905288781d698a10241fd81c3aa2ca57bbff808dfa3494363b4e'
+    DINGDING_ROBOT_URL = 'https://oapi.dingtalk.com/robot/send?access_token=3694474567a64dcf6fca101424acb325f6f54ce5da5a69c3e590cc6b98dba3c4'
   }
 
   stages {
