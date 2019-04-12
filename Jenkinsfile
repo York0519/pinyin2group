@@ -44,6 +44,7 @@ pipeline {
           }
         }
       }
+    }
   }
 
   post {
