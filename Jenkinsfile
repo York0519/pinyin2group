@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:10-alpine'
-    }
-  }
+  agent any
 
   environment {
     NODEJS_ORG_MIRROR = 'https://npm.taobao.org/mirrors/node'
