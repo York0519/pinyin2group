@@ -73,16 +73,25 @@ export class Pinyin2Group {
   /**
    * **获取中文词语不带声调的拼音**
    * @param word 中文词语
-   * @param isUppercase 可选，是否返回大写字母，默认小写
+   * @param options 可选
+   * * options.isUppercase 可选，是否返回大写字母，默认小写
+   * * options.separator 可选，分隔符，可传空字符串，默认空
    * @returns string
    */
-  public getPinyinWithoutTone(word: string, isUppercase: boolean = false) {
+  public getPinyinWithoutTone(word: string, options?: {
+    isUppercase?: boolean,
+    separator?: string,
+  }) {
     if (!word || !word.match(this.regExpStartAll)) {
       return this.numberSign;
     }
+
+    const isUp = options && options.isUppercase;
+    const sep = options && options.separator || '';
+
     // 纯字母的,则返回第一个字母
     if (word.match(this.regExpLetter)) {
-      if (isUppercase) {
+      if (isUp) {
         return word.toUpperCase();
       }
 
@@ -91,10 +100,10 @@ export class Pinyin2Group {
 
     let pinyinWithoutTone = '';
     const replaceWord = word.replace(this.regExpNonAll, '');
-    const pinyins = pinyin4js.convertToPinyinString(replaceWord, '', 'WITHOUT_TONE');
+    const pinyins = pinyin4js.convertToPinyinString(replaceWord, sep, 'WITHOUT_TONE');
 
     pinyinWithoutTone = pinyins.toLowerCase();
-    if (isUppercase) {
+    if (isUp) {
       pinyinWithoutTone = pinyins.toUpperCase();
     }
 
@@ -123,7 +132,7 @@ export class Pinyin2Group {
       }
 
       // 1. 转成首字母数组
-      const pinyinWithoutTone = this.getPinyinWithoutTone(words.word, true);
+      const pinyinWithoutTone = this.getPinyinWithoutTone(words.word, { isUppercase: true });
 
       const firstLetterItem: IFirstLetterSortItem = {
         ...words,

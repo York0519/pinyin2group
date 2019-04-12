@@ -388,7 +388,7 @@ describe('Pinyin2Group tests suites.', () => {
   });
 
   it('大写拼音test', () => {
-    const result = new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', true);
+    const result = new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', { isUppercase: true });
 
     expect(result).toEqual('XIAMENNIHAODASHAXIAMEN');
   });
@@ -397,6 +397,12 @@ describe('Pinyin2Group tests suites.', () => {
     const result = new Pinyin2Group().groupByFirstLetter([{ word: '厦门你好大厦厦门' }]);
 
     expect(result[result.length - 1].letter).toEqual('#');
+  });
+
+  it('分隔符test', () => {
+    const result = new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', { separator: ' ' });
+
+    expect(result).toEqual('xia men ni hao da sha xia men');
   });
 
 });
