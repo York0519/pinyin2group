@@ -9,38 +9,41 @@ pipeline {
   }
 
   stages {
+    stage('在docker构建') {
       agent {
         docker {
           image 'node:10-alpine'
           args '-v $MASTER_WORKSPACE:$MASTER_WORKSPACE'
         }
       }
-    stage('初始化') {
-      steps {
-        echo '开始安装依赖'
-        sh "npm version preminor --preid=${BUILD_NUMBER}"
-        sh 'npm install'
-        script {
-          env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"').trim()
-          env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"').trim()
+      stages {
+        stage('初始化') {
+          steps {
+            echo '开始安装依赖'
+            sh "npm version preminor --preid=${BUILD_NUMBER}"
+            sh 'npm install'
+            script {
+              env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"').trim()
+              env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"').trim()
+            }
+          }
+        }
+
+        stage('检查代码') {
+          steps {
+            echo '开始执行 tslint'
+            sh 'npm run lint'
+          }
+        }
+
+        stage('发布') {
+          steps {
+            echo '开始发布'
+            sh "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
+            sh 'npm publish'
+          }
         }
       }
-    }
-
-    stage('检查代码') {
-      steps {
-        echo '开始执行 tslint'
-        sh 'npm run lint'
-      }
-    }
-
-    stage('发布') {
-      steps {
-        echo '开始发布'
-        sh "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
-        sh 'npm publish'
-      }
-    }
   }
 
   post {
