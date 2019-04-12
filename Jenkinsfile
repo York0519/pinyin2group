@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    node { label 'master' }
+  }
 
   environment {
     NODEJS_ORG_MIRROR = 'https://npm.taobao.org/mirrors/node'
@@ -7,6 +9,12 @@ pipeline {
   }
 
   stages {
+      agent {
+        docker {
+          image 'node:10-alpine'
+          args '-v $MASTER_WORKSPACE:$MASTER_WORKSPACE'
+        }
+      }
     stage('初始化') {
       steps {
         echo '开始安装依赖'
@@ -29,6 +37,7 @@ pipeline {
     stage('发布') {
       steps {
         echo '开始发布'
+        sh "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
         sh 'npm publish'
       }
     }
