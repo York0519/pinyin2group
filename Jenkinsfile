@@ -31,8 +31,8 @@ pipeline {
     stage('初始化') {
       steps {
         echo '开始安装依赖'
-        sh 'npm install'
         sh "npm version preminor --preid=${BUILD_NUMBER}"
+        sh 'npm install'
         script {
           env.PACKAGE_VERSION = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').version.trim()"').trim()
           env.PACKAGE_NAME = sh(returnStdout: true, script: 'node -pe "require(\'./package.json\').name.trim()"').trim()
