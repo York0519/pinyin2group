@@ -59,7 +59,7 @@ pipeline {
 def failNotifyData() {
   def changes = getChangeListByBuild(currentBuild)
   def title = "${env.JOB_NAME} 构建失败 [${env.BUILD_NUMBER}]"
-  def markdown = "### ${title}\n #### 新增特性 ${changes} \n #### 摘要 > buildUrl: ${env.BUILD_URL} \n > [点击查看](${env.BUILD_URL}/console)"
+  def markdown = "### ${title}\n #### 新增特性: ${changes} \n #### 摘要 > buildUrl: ${env.BUILD_URL} \n > [点击查看](${env.BUILD_URL}/console)"
   return buildJSON(title, markdown)
 }
 
