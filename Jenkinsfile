@@ -5,6 +5,22 @@ pipeline {
     }
   }
 
+  triggers {
+    // 自动关联webhook
+    GenericTrigger(
+     genericVariables: [
+        [key: 'ref', value: '$.ref'],   // 取post过来的json数值，格式为,refs/heads/develop
+        [key: 'hookName', value: '$.hook_name'],    // 钩子名称，push_hooks, tag_push_hooks可以在码云勾选不同类型
+        [key: 'projectPath', value: '$.project.path_with_namespace'] // 项目路径，区分不同路径 york17/pinyin2group
+      ],
+      causeString: 'Triggered on $ref',
+      regexpFilterExpression: 'push_hooks#york17/pinyin2group',    // 只在push代码到york17/pinyin2group的时候触发构建
+      regexpFilterText: '$hookName#$projectPath',   // 模板字符串，会和regexpFilterExpression比较，匹配后才触发构建
+      printContributedVariables: true,
+      printPostContent: true
+    )
+  }
+
   environment {
     NODEJS_ORG_MIRROR = 'https://npm.taobao.org/mirrors/node'
     DINGDING_ROBOT_URL = 'https://oapi.dingtalk.com/robot/send?access_token=${DINGDING_TOKEN}'
