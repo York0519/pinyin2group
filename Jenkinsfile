@@ -15,7 +15,7 @@ pipeline {
         [key: 'projectPath', value: '$.project.path_with_namespace'] // 项目路径，区分不同路径 york17/pinyin2group
       ],
       causeString: 'Triggered on $ref',
-      regexpFilterExpression: 'push_hooks#york17/pinyin2group',    // 只在push代码到york17/pinyin2group的时候触发构建
+      regexpFilterExpression: 'push_hooks#york17/pinyin2group2',    // 只在push代码到york17/pinyin2group的时候触发构建
       regexpFilterText: '$hookName#$projectPath',   // 模板字符串，会和regexpFilterExpression比较，匹配后才触发构建
       printContributedVariables: true,
       printPostContent: true
