@@ -1,6 +1,6 @@
 {
   "name": "pinyin2group",
-  "version": "0.0.1-3.2",
+  "version": "0.0.1-4.0",
   "description": "基于pinyin4js的通讯录分组排序工具",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
