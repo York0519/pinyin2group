@@ -59,6 +59,9 @@ Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，pinyin4js�
     console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门'));
 
     // output: XIAMENNIHAODASHAXIAMEN
-    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', true));
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', { isUppercase: true }));
+
+    // output: xia men ni hao da sha xia men
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门'), { separator: ' ' });
 
 ```

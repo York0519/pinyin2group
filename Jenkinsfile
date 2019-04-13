@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     NODEJS_ORG_MIRROR = 'https://npm.taobao.org/mirrors/node'
-    DINGDING_ROBOT_URL = 'https://oapi.dingtalk.com/robot/send?access_token=3694474567a64dcf6fca101424acb325f6f54ce5da5a69c3e590cc6b98dba3c4'
+    DINGDING_ROBOT_URL = 'https://oapi.dingtalk.com/robot/send?access_token=${DINGDING_TOKEN}'
   }
 
   stages {
@@ -33,6 +33,7 @@ pipeline {
     stage('发布') {
       steps {
         echo '开始发布'
+        sh "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
         sh 'npm publish'
       }
     }

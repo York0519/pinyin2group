@@ -59,6 +59,9 @@ Support the recognition of common polyphonic words, including phrases, idioms, p
     console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门'));
 
     // output: XIAMENNIHAODASHAXIAMEN
-    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', true));
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门', { isUppercase: true }));
+
+    // output: xia men ni hao da sha xia men
+    console.log(new Pinyin2Group().getPinyinWithoutTone('厦门你好大厦厦门'), { separator: ' ' });
 
 ```
