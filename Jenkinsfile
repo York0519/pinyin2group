@@ -49,7 +49,7 @@ pipeline {
 
     stage('发布') {
       steps {
-        echo '开始发布'
+        echo '开始发布啦'
         sh "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
         sh 'npm publish'
       }
