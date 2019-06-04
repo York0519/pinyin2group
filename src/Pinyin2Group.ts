@@ -55,11 +55,11 @@ interface ICreateEmptyLetterGroup {
 export class Pinyin2Group {
 
   /**
-   * 匹配中文和字母
+   * 匹配中文和字母开头
    */
   private readonly regExpStartAll = /^[\u4e00-\u9fa5a-zA-Z]+/;
   /**
-   * 匹配中文和字母
+   * 匹配非中文和字母
    */
   private readonly regExpNonAll = /[^\u4e00-\u9fa5a-zA-Z]+/g;
   /**
@@ -82,6 +82,7 @@ export class Pinyin2Group {
     isUppercase?: boolean,
     separator?: string,
   }) {
+    // TODO: 改成reg.test
     if (!word || !word.match(this.regExpStartAll)) {
       return this.numberSign;
     }
@@ -91,23 +92,13 @@ export class Pinyin2Group {
 
     // 纯字母的,则返回第一个字母
     if (word.match(this.regExpLetter)) {
-      if (isUp) {
-        return word.toUpperCase();
-      }
-
-      return word.toLowerCase();
+      return isUp ? word.toUpperCase() : word.toLowerCase();
     }
 
-    let pinyinWithoutTone = '';
     const replaceWord = word.replace(this.regExpNonAll, '');
     const pinyins = pinyin4js.convertToPinyinString(replaceWord, sep, 'WITHOUT_TONE');
 
-    pinyinWithoutTone = pinyins.toLowerCase();
-    if (isUp) {
-      pinyinWithoutTone = pinyins.toUpperCase();
-    }
-
-    return pinyinWithoutTone;
+    return isUp ? pinyins.toUpperCase() : pinyins.toLowerCase();
   }
 
   /**
@@ -152,6 +143,7 @@ export class Pinyin2Group {
     return this.grouping(allWordsList, options);
   }
 
+  // TODO: 用数组来装26个字母；全部补完了再移除
   /**
    * **分组**：已排好序，直接取上下文分组即可，方便简单
    * @param allWordsList 所有的含首字母中文词语
